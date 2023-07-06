@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress';
 export default defineConfig({
   title: 'nukleo.io',
   description: 'Guia da API',
+  base: '/APIDocs/',
   dest: '../docs/',
   srcDir: './src',
   themeConfig: {
