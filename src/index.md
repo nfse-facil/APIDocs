@@ -68,141 +68,167 @@ Content-Type: application/json
 
 A seguir estão os principais recursos disponíveis na API da **nukleo.io**. Para cada recurso, deverá haver um endpoint disponível para fazer requisições.
 
-| Recurso                              | Descrição                                                       |
-| :----------------------------------- | :-------------------------------------------------------------- |
-| [Verifications](#verifications) :id: | Interact with every verification check ran by your organization |
+| Recurso                                       | Descrição                                         |
+| :-------------------------------------------- | :------------------------------------------------ |
+| [Receipts](#receipts) :receipt:               | Busque as notas emitidas por sua organização      |
+| [Customers](#customers) :tipping_hand_person: | Busque os clientes cadastrados em sua organização |
+| [Companies](#companies) :office:              | Busque as empresas cadastradas em sua organização |
 
-### Verifications
+### Receipts
 
-This is an object that represents an executed verification check. You can retrieve it to see the result for each check ran inside an agreement link or under your organization.
+Este é um objeto que representa as Notas Fiscais.
 
 #### Endpoints
 
-| Name                                                                                                                                                                                                                          | Endpoint                                       |
-| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------- |
-| [List webhooks](#list-webhooks) <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">new</p>             | `GET /webhooks`                                |
-| [Get webhook](#get-webhook) <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">new</p>                 | `GET /webhooks/{webhook_id}`                   |
-| [Create webhook](#create-webhook)                                                                                                                                                                                             | `POST /webhooks`                               |
-| [Update webhook](#update-webhook) <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">new</p>           | `PUT /webhooks/{webhook_id}`                   |
-| [Delete webhook](#delete-webhook) <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">new</p>           | `DELETE /webhooks/{webhook_id}`                |
-| [List webhook events](#list-webhook-events) <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">new</p> | `GET /webhooks/{webhook_id}/events`            |
-| [Get webhook event](#get-webhook-event) <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">new</p>     | `GET /webhooks/{webhook_id}/events/{event_id}` |
+| Nome                                                             | Endpoint        |
+| :--------------------------------------------------------------- | :-------------- |
+| [Lista receipts](#list-receipts) <Badge type="tip" text="new" /> | `GET /receipts` |
 
-#### The webhook object
+<h4 id="receipt-body">Objeto `Receipt`</h4>
 
-Attributes
-| Field | Type | Description |
-| ------------------------------------------------------------------------------------------------- | ---------------- | ----------------------------------------------- |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">webhook_id</p> | `string` | Id of the webhook |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">created_at</p> | `unix timestamp` | Datetime webhook was created |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">updated_at</p> | `unix timestamp` | Datetime webhook was last updated |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">destination_url</p> | `string` | URL webhook will be delivered to |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">event_types</p> | `array<enum>` | List of [event type](#webhook-event-type-enums) to trigger from |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">notification_emails</p> | `array<string>` | Emails that will be notified in case of failure |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">created_by</p> | `string` | User id that created the webhook |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">updated_by</p> | `string` | User id that last updated the webhook |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">service_status</p> | `bool` | Webhook current status |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">organization_id</p> | `string` | Id of the organization |
+Atributos do objeto
+| Campo | Tipo | Descrição |
+| :----- | :---------------- | :----------- |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">receipt_id</p> | `string` | Id da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">created_at</p> | `int` | Nota fiscal criada em |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">updated_at</p> | `int` | Nota fiscal atualizada em |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">verification_code</p> | `str` | Código de verificação da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at</p> | `int` | Data de emissão da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_issued_at</p> | `int` | Data de conversão da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_number</p> | `string` | Número do RPS |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">receipt_number</p> | `string` | Número da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">total_value</p> | `float` | Valor total da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">cancelled_at</p> | `int` | Data de cancelamento da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">replaced_at</p> | `int` | Data de substituição da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">status</p> | `Enum` | Status da nota fiscal [StatusEnum](#receipts-status-enum)|
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">extracted_fields</p> | `list[str]` | Campos extraídos da nota fiscal |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">customer</p> | `dict` | Dados do cliente [Customer](#customer-body)|
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">company</p> | `dict` | Dados da empresa [Company](#company-body)|
 
-:::details Webhook Example
-**Example**
+:::details Exemplo de `Receipt`
 
 ```json
 {
-  "webhook_id": "wb_b6924c66ae114fada7d351388b06c6a4",
-  "created_at": 1677091886000,
-  "updated_at": 1677091886000,
-  "destination_url": "https://destination.url",
-  "event_types": ["verification", "agreement.viewed", "agreement.completed"],
-  "notification_emails": ["caio@nukleo.io"],
-  "created_by": null,
-  "updated_by": null,
-  "service_status": false,
-  "organization_id": "ORG-AbCd1234"
+  "receipt_id": "receipt_abc123",
+  "created_at": 1688159543000,
+  "updated_at": 1688159543000,
+  "verification_code": "ABC123",
+  "issued_at": 1682553600000,
+  "rps_issued_at": 1682553600000,
+  "rps_number": "88888",
+  "receipt_number": "9999999",
+  "total_value": 999.9,
+  "cancelled_at": null,
+  "replaced_at": null,
+  "status": "issued",
+  "extracted_fields": [
+    "{\"rps_issued_date\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYQAAAA\"}"
+  ],
+  "customer": {
+    "customer_id": "customer_abc123",
+    "emails": ["customer@email.com"],
+    "name": "Nome do cliente",
+    "tax_id": "99999999999"
+  },
+  "company": {
+    "company_id": "companies_abc123",
+    "legal_name": "Nome legal da empresa",
+    "trade_name": "Nome fantasia da empresa",
+    "city": "Curitiba",
+    "state": "PR",
+    "tax_id": "9999999999999"
+  }
 }
 ```
 
 :::
 
-<h4 id="webhook-event-type-enums">Webhook event type enums</h4>
+<h4 id="receipts-status-enum">Status Enum</h4>
 
-| Value                 | Description                                           |
-| --------------------- | ----------------------------------------------------- |
-| `verification`        | Triggers when a verification check is ran             |
-| `agreement.viewed`    | Triggers when an agreement is viewed                  |
-| `agreement.signed`    | Triggers when an agreement is signed (by each signer) |
-| `agreement.completed` | Triggers when an agreement is signed (by all signers) |
+| Valor       | Descrição               |
+| ----------- | ----------------------- |
+| `issued`    | Nota fiscal emitida     |
+| `cancelled` | Nota fiscal cancelada   |
+| `replaced`  | Nota fiscal substituída |
 
-<h3 id="list-webhooks">List webhooks</h3>
+<h3 id="list-receipts">Lista receipts</h3>
 
-This endpoint list webhooks.
+Este endpoint lista receipts.
 
-**What can you do with this information?**
+**O que você pode fazer com isso?**
 
-When querying data from this endpoint you will be able to retrieve every webhook created under the authenticated organization.
+Ao consultar dados deste endpoint, você poderá recuperar todas as notas emitidas sob a organização autenticada.
 
 **Endpoint**
 
 ```
-GET /webhooks
+GET /receipts
 ```
 
-**Path Parameters**
+**Parâmetros de Path**
 
-`null`
+`N/A`
 
-**Query Parameters**
-| Field | Type | Description | Required | Default Value
+**Parâmetros de Query**
+| Campo | Tipo | Descrição | Obrigatório | Valor Padrão
 | :--- | :--- | :--- | :---: | :---: |
-| size | `integer` | Amount of record per page (page size) | `false` | `50` |
-| page | `integer` | Current page number | `false` | `1` |
-| search | `string` | Filter records with OR condition | `false` | `-` |
-| order_by | `string` | Order records by a specific field | `false` | `created_at DESC` |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p> | `integer` | Quantidade de registros por página (tamanho da página) | `false` | `50` |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">page</p> | `integer` | Número da página atual | `false` | `1` |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">search</p> | `string` | Filtrar registros entre variáveis | `false` | `-` |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">order_by</p> | `string` | Ordenar registros por um campo específico | `false` | `created_at DESC` |
 
-_Example_
+_Exemplo_
 
 ```
-GET /webhooks?size=10&page=1
+GET /receipts?size=10&page=1
 ```
 
-**Response Body**
+**Corpo da Resposta**
 
-| Field | Type             | Description                           | Example                  |
-| :---- | :--------------- | :------------------------------------ | :----------------------- |
-| items | `array<Webhook>` | An array of retrieved items           | [Webhook](#webhook-body) |
-| total | `integer`        | Amount of items available             | `20`                     |
-| page  | `string`         | Current page number                   | `1`                      |
-| size  | `string`         | Amount of record per page (page size) | `10`                     |
-| pages | `string`         | Amount of pages available             | `2`                      |
+| Campo                                                                               | Tipo      | Descrição                          | Exemplo                  |
+| :---------------------------------------------------------------------------------- | :-------- | :--------------------------------- | :----------------------- |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">items</p> | `list`    | Lista dos registros                | [Receipt](#receipt-body) |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">total</p> | `integer` | Quantidade de itens disponíveis    | `20`                     |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">page</p>  | `string`  | Número da página atual             | `1`                      |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p>  | `string`  | Quantidade de registros por página | `10`                     |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">pages</p> | `string`  | Quantidade de páginas disponíveis  | `2`                      |
 
-:::details View Response Example
-**Example**
+:::details Exemplo de Resposta
 
 ```json
 {
   "items": [
     {
-      "webhook_id": "wb_b6924c66ae114fada7d351388b06c6a4",
-      "created_at": 1677091886000,
-      "updated_at": 1677091886000,
-      "destination_url": "https://destination.url",
-      "event_types": ["verification", "agreement.viewed", "agreement.completed"],
-      "notification_emails": ["caio@nukleo.io"],
-      "created_by": null,
-      "updated_by": null,
-      "service_status": false
+      "receipt_id": "receipt_abc123",
+      "created_at": 1688159543000,
+      "updated_at": 1688159543000,
+      "verification_code": "ABC123",
+      "issued_at": 1682553600000,
+      "rps_issued_at": 1682553600000,
+      "rps_number": "88888",
+      "receipt_number": "9999999",
+      "total_value": 999.9,
+      "cancelled_at": null,
+      "replaced_at": null,
+      "status": "issued",
+      "extracted_fields": [
+        "{\"rps_issued_date\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYQAAAA\"}"
+      ],
+      "customer": {
+        "customer_id": "customer_abc123",
+        "name": "Nome do cliente",
+        "tax_id": "99999999999"
+      },
+      "company": {
+        "company_id": "companies_abc123",
+        "legal_name": "Nome legal da empresa",
+        "trade_name": "Nome fantasia da empresa",
+        "city": "Curitiba",
+        "state": "PR",
+        "tax_id": "9999999999999"
+      }
     },
-    {
-      "webhook_id": "wb_577500dbdb034389a51f33bf02dd5ed9",
-      "created_at": 1684944059000,
-      "updated_at": 1684944059000,
-      "destination_url": "https://webhook.site",
-      "event_types": ["verification"],
-      "notification_emails": null,
-      "created_by": null,
-      "updated_by": null,
-      "service_status": true
-    }
+    {}
   ],
   "total": 2,
   "page": 1,
@@ -213,304 +239,69 @@ GET /webhooks?size=10&page=1
 
 :::
 
-<h3 id="get-webhook">Get webhook</h3>
+### Customers
 
-This endpoint gets a webhook.
+Este é um objeto que representa os Clientes.
 
-**What can you do with this information?**
+#### Endpoints
 
-When querying data from this endpoint you will be able to retrieve data from a specific webhook created under the authenticated organization.
+| Nome                                                       | Endpoint         |
+| :--------------------------------------------------------- | :--------------- |
+| [Lista customers]() <Badge type="warning" text="coming" /> | `GET /customers` |
 
-**Endpoint**
+<h4 id="customer-body">Objeto `Customer`</h4>
 
-```
-GET /webhook/{webhook_id}
-```
+Atributos do objeto
+| Campo | Tipo | Descrição |
+| :----- | :---------------- | :----------- |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">customer_id</p> | `string` | Id do cliente |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">name</p> | `int` | Nome do cliente |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">tax_id</p> | `str` | CNPJ/CPF do cliente |
 
-**Path Parameters**
-
-`null`
-
-**Query Parameters**
-
-`null`
-
-**Response Body**
-
-| Field          | Type       | Description              | Example                      |
-| :------------- | :--------- | :----------------------- | :--------------------------- |
-| webhook_id     | `string`   | Id of the webhook record | `WEBHOOK-AbCd134`            |
-| event_datetime | `datetime` | Datetime of the event    | `2023-01-01T23:59:59.000000` |
-
-:::details View Response Example
-**Example**
+:::details Exemplo de `Customer`
 
 ```json
 {
-  "webhook_id": "WEBHOOK-1683235983022_af042c9254b446b982a9e9a849630b89",
-  "event_datetime": "2023-05-04T21:33:03.023949"
+  "customer_id": "customer_abc123",
+  "name": "Nome do cliente",
+  "tax_id": "99999999999"
 }
 ```
 
 :::
 
-<h3 id="create-webhook">Create webhook</h3>
+### Companies
 
-This endpoint creates a webhook.
+Este é um objeto que representa as Empresas.
 
-**What can you do with this information?**
+#### Endpoints
 
-When sending data to this endpoint you will be able to create a webhook under the authenticated organization.
+| Nome                                                       | Endpoint         |
+| :--------------------------------------------------------- | :--------------- |
+| [Lista companies]() <Badge type="warning" text="coming" /> | `GET /companies` |
 
-**Endpoint**
+<h4 id="company-body">Objeto `Company`</h4>
 
-```
-POST /webhooks
-```
+Atributos do objeto
+| Campo | Tipo | Descrição |
+| :----- | :---------------- | :----------- |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">company_id</p> | `string` | Id da empresa |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">legal_name</p> | `int` | Nome legal da empresa |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">trade_name</p> | `int` | Nome fantasia da empresa |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">city</p> | `str` | Cidade da empresa |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">state</p> | `int` | Estado da empresa |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">tax_id</p> | `int` | CNPJ da empresa |
 
-**Path Parameters**
-
-`null`
-
-**Query Parameters**
-
-`null`
-
-**Request Body**:
-
-| Field                                                                                                                                                                                                        | Type     | Description                                     |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- | :---------------------------------------------- |
-| destination_url                                                                                                                                                                                              | `string` | Webhook URL destination                         |
-| notification_email <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">coming next</p> | `string` | Email to notified in case of delivering failure |
-
-:::details Request Body Example
-**Example**
+:::details Exemplo de `Company`
 
 ```json
 {
-  "destination_url": "https://webhook.destination.url",
-  "notification_email": "notification@email.com"
-}
-```
-
-:::
-
-**Response Body**
-
-| Field          | Type       | Description              | Example                      |
-| :------------- | :--------- | :----------------------- | :--------------------------- |
-| webhook_id     | `string`   | Id of the webhook record | `WEBHOOK-AbCd134`            |
-| event_datetime | `datetime` | Datetime of the event    | `2023-01-01T23:59:59.000000` |
-
-:::details View Response Example
-**Example**
-
-```json
-{
-  "webhook_id": "WEBHOOK-1683235983022_af042c9254b446b982a9e9a849630b89",
-  "event_datetime": "2023-05-04T21:33:03.023949"
-}
-```
-
-:::
-
-<h3 id="update-webhook">Update webhook</h3>
-
-This endpoint updates a webhook.
-
-**What can you do with this information?**
-
-When sending data to this endpoint you will be able to update a webhook created under the authenticated organization.
-
-**Endpoint**
-
-```
-PUT /webhooks/{webhook_id}
-```
-
-**Path Parameters**
-
-`null`
-
-**Query Parameters**
-
-`null`
-
-**Request Body**:
-
-| Field                                                                                                                                                                                                        | Type     | Description                                     |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- | :---------------------------------------------- |
-| destination_url                                                                                                                                                                                              | `string` | Webhook URL destination                         |
-| notification_email <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">coming next</p> | `string` | Email to notified in case of delivering failure |
-
-:::details Request Body Example
-**Example**
-
-```json
-{
-  "destination_url": "https://webhook.destination.url",
-  "notification_email": "notification@email.com"
-}
-```
-
-:::
-
-**Response Body**
-
-| Field          | Type       | Description              | Example                      |
-| :------------- | :--------- | :----------------------- | :--------------------------- |
-| webhook_id     | `string`   | Id of the webhook record | `WEBHOOK-AbCd134`            |
-| event_datetime | `datetime` | Datetime of the event    | `2023-01-01T23:59:59.000000` |
-
-:::details View Response Example
-**Example**
-
-```json
-{
-  "webhook_id": "WEBHOOK-1683235983022_af042c9254b446b982a9e9a849630b89",
-  "event_datetime": "2023-05-04T21:33:03.023949"
-}
-```
-
-:::
-
-<h3 id="delete-webhook">Delete webhook</h3>
-
-This endpoint deletes a webhook.
-
-**What can you do with this information?**
-
-When sending data to this endpoint you will be able to delete a webhook created under the authenticated organization.
-
-**Endpoint**
-
-```
-DELETE /webhooks/{webhook_id}
-```
-
-**Path Parameters**
-
-`null`
-
-**Query Parameters**
-
-`null`
-
-**Request Body**:
-
-| Field                                                                                                                                                                                                        | Type     | Description                                     |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- | :---------------------------------------------- |
-| destination_url                                                                                                                                                                                              | `string` | Webhook URL destination                         |
-| notification_email <p style="display: inline-block;font-size: 14px;font-weight: 600;height: 18px;line-height: 18px;border-radius: 3px;padding: 0 6px;color: #fff;background-color: #42b983;">coming next</p> | `string` | Email to notified in case of delivering failure |
-
-:::details Request Body Example
-**Example**
-
-```json
-{
-  "destination_url": "https://webhook.destination.url",
-  "notification_email": "notification@email.com"
-}
-```
-
-:::
-
-**Response Body**
-
-| Field          | Type       | Description              | Example                      |
-| :------------- | :--------- | :----------------------- | :--------------------------- |
-| webhook_id     | `string`   | Id of the webhook record | `WEBHOOK-AbCd134`            |
-| event_datetime | `datetime` | Datetime of the event    | `2023-01-01T23:59:59.000000` |
-
-:::details View Response Example
-**Example**
-
-```json
-{
-  "webhook_id": "WEBHOOK-1683235983022_af042c9254b446b982a9e9a849630b89",
-  "event_datetime": "2023-05-04T21:33:03.023949"
-}
-```
-
-:::
-
-<h3 id="list-webhook-events">List webhook events</h3>
-
-This endpoint list webhook events.
-
-**What can you do with this information?**
-
-When querying data from this endpoint you will be able to retrieve every event from a specific webhook created under the authenticated organization.
-
-**Endpoint**
-
-```
-GET /webhooks/{webhook_id}/events
-```
-
-**Path Parameters**
-
-`null`
-
-**Query Parameters**
-
-`null`
-
-**Response Body**
-
-| Field          | Type       | Description              | Example                      |
-| :------------- | :--------- | :----------------------- | :--------------------------- |
-| webhook_id     | `string`   | Id of the webhook record | `WEBHOOK-AbCd134`            |
-| event_datetime | `datetime` | Datetime of the event    | `2023-01-01T23:59:59.000000` |
-
-:::details View Response Example
-**Example**
-
-```json
-{
-  "webhook_id": "WEBHOOK-1683235983022_af042c9254b446b982a9e9a849630b89",
-  "event_datetime": "2023-05-04T21:33:03.023949"
-}
-```
-
-:::
-
-<h3 id="get-webhook-event">Get webhook event</h3>
-
-This endpoint gets a webhook event.
-
-**What can you do with this information?**
-
-When querying data from this endpoint you will be able to retrieve a specific event from a specific webhook created under the authenticated organization.
-
-**Endpoint**
-
-```
-GET /webhooks/{webhook_id}/events/{event_id}
-```
-
-**Path Parameters**
-
-`null`
-
-**Query Parameters**
-
-`null`
-
-**Response Body**
-
-| Field          | Type       | Description              | Example                      |
-| :------------- | :--------- | :----------------------- | :--------------------------- |
-| webhook_id     | `string`   | Id of the webhook record | `WEBHOOK-AbCd134`            |
-| event_datetime | `datetime` | Datetime of the event    | `2023-01-01T23:59:59.000000` |
-
-:::details View Response Example
-**Example**
-
-```json
-{
-  "webhook_id": "WEBHOOK-1683235983022_af042c9254b446b982a9e9a849630b89",
-  "event_datetime": "2023-05-04T21:33:03.023949"
+  "company_id": "companies_abc123",
+  "legal_name": "Nome legal da empresa",
+  "trade_name": "Nome fantasia da empresa",
+  "city": "Curitiba",
+  "state": "PR",
+  "tax_id": "9999999999999"
 }
 ```
 
