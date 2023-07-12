@@ -96,6 +96,8 @@ Atributos do objeto
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at</p> | `int` | Data de emissão da nota fiscal |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_issued_at</p> | `int` | Data de conversão da nota fiscal |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_number</p> | `string` | Número do RPS |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_serie</p> | `string` | Série do RPS |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_type</p> | `string` | Tipo do RPS |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">receipt_number</p> | `string` | Número da nota fiscal |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">total_value</p> | `float` | Valor total da nota fiscal |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">cancelled_at</p> | `int` | Data de cancelamento da nota fiscal |
@@ -116,6 +118,8 @@ Atributos do objeto
   "issued_at": 1682553600000,
   "rps_issued_at": 1682553600000,
   "rps_number": "88888",
+  "rps_serie": "RPS",
+  "rps_type": "1",
   "receipt_number": "9999999",
   "total_value": 999.9,
   "cancelled_at": null,
@@ -206,6 +210,8 @@ GET /receipts?size=10&page=1
       "issued_at": 1682553600000,
       "rps_issued_at": 1682553600000,
       "rps_number": "88888",
+      "rps_serie": "RPS",
+      "rps_type": "1",
       "receipt_number": "9999999",
       "total_value": 999.9,
       "cancelled_at": null,
