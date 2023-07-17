@@ -2,7 +2,7 @@
 { 'home': False }
 ---
 
-# Guia da API
+# Referência da API
 
 <p style="margin-top:-5px;">Versão atual <Badge type="tip" text="2.0.0" /></p>
 
