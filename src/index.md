@@ -196,31 +196,45 @@ GET /receipts
 `N/A`
 
 **Parâmetros de Query**
+
+Campos Gerais
+<br>
 [Parâmetros de paginação](#pagination)
+<br>
 [Parâmetros de busca](#search)
 
-| Campo | Tipo | Descrição | Obrigatório | Valor Padrão
-| :--- | :--- | :--- | :---: | :---: |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p> | `integer` | Quantidade de registros por página (tamanho da página) | `false` | `50` |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">page</p> | `integer` | Número da página atual | `false` | `1` |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">search</p> | `string` | Filtrar registros entre variáveis | `false` | `-` |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">order_by</p> | `string` | Ordenar registros por um campo específico | `false` | `created_at DESC` |
+Campos Exclusivos
+| Campo | Tipo | Descrição |
+| :--- | :--- | :--- |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">company_id</p> | `string` | Filtra registros por id de empresa igual a | 
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">status</p> | [StatusEnum](#receipts-status-enum)| Filtra registros por status da nota fiscal igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">cancelled_at</p> | `string` | Filtra registros por data de cancelamento igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">replaced_at</p> | `string` | Filtra registros por data de substituição igual a|
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at</p> | `string` | Filtra registros por data de emissão igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at__gte</p> | `string` | Filtra registros por data de emissão maior ou igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at__lte</p> | `string` | Filtra registros por data de emissão menor ou igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_issued_at</p> | `string` | Filtra registros por data de conversão igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">total_value</p> | `string` | Filtra registros por valor total igual a | 
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">receipt_number</p> | `string` | Filtra registros por número da nota fiscal igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_number</p> | `string` | Filtra registros por número do RPS igual a | 
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_serie</p> | `string` | OFiltra registros por série do RPS igual a  | 
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_type</p> | `string` | Filtra registros por tipo do RPS igual a  | 
 
 _Exemplo_
 
 ```
-GET /receipts?size=10&page=1
+GET /receipts?issued_at__gte=2023-01-01&issued_at__lte=2023-01-31
 ```
 
 **Corpo da Resposta**
 
-| Campo                                                                               | Tipo      | Descrição                          | Exemplo                  |
-| :---------------------------------------------------------------------------------- | :-------- | :--------------------------------- | :----------------------- |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">items</p> | `list`    | Lista dos registros                | [Receipt](#receipt-body) |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">total</p> | `integer` | Quantidade de itens disponíveis    | `20`                     |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">page</p>  | `string`  | Número da página atual             | `1`                      |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p>  | `string`  | Quantidade de registros por página | `10`                     |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">pages</p> | `string`  | Quantidade de páginas disponíveis  | `2`                      |
+| Campo                                                                               | Tipo      | Descrição                          |
+| :---------------------------------------------------------------------------------- | :-------- | :--------------------------------- | 
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">items</p> | `list`    | Lista de [Receipts](#receipt-body) |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">total</p> | `integer` | Quantidade de itens disponíveis    |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">page</p>  | `string`  | Número da página atual             |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p>  | `string`  | Quantidade de registros por página |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">pages</p> | `string`  | Quantidade de páginas disponíveis  |
 
 :::details Exemplo de Resposta
 
