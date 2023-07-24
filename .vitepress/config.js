@@ -9,6 +9,63 @@ export default defineConfig({
   themeConfig: {
     logo: '/logo.png',
     siteTitle: false,
+    sidebar: [
+      {
+        text: 'Introdução',
+        link: '#comece-aqui',
+        items: [
+          {
+            text: 'Autenticação',
+            link: '#_1-obtenha-suas-chaves',
+          },
+          {
+            text: 'Formato',
+            link: '#format',
+          },
+          {
+            text: 'Erros',
+            link: '#errors',
+          },
+          {
+            text: 'Requisições',
+            link: '#rate-limit',
+          },
+          {
+            text: 'Paginação',
+            link: '#pagination',
+          },
+          {
+            text: 'Busca',
+            link: '#search',
+          },
+        ],
+      },
+      {
+        text: 'Endpoints',
+        link: '#recursos-principais',
+        items: [
+          {
+            text: 'Receipts',
+            collapsed: true,
+            link: '#receipts',
+            items: [
+              {
+                text: 'Listar receipts',
+                link: '#_1-listar-receipts',
+              },
+            ]
+          },
+          {
+            text: 'Customers',
+            link: '#customers',
+          },
+          {
+            text: 'Companies',
+            link: '#companies',
+          },
+        ]
+      }
+    ],
     nav: [
       {
         text: 'Versão da API',

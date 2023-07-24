@@ -23,7 +23,7 @@ Para gerar novas credenciais, favor entrar em contato com <a href="mailto:suport
 
 ### 2. Conheça o básico
 
-**Formato de requisição e resposta**
+<h4 id="format">Formato de requisição e resposta</h4>
 
 - Autenticação baseada em token. As chaves da API devem ser incluídas no cabeçalho de todas as requisições feitas à API.
 
@@ -33,7 +33,7 @@ Para gerar novas credenciais, favor entrar em contato com <a href="mailto:suport
 
 - Os campos de texto suportam UTF-8, mas não permitem certos caracteres especiais.
 
-**Erros**
+<h4 id="errors">Erros</h4>
 
 - Todos os erros seguem a mesma estrutura utilizando uma implementação parcial do [RFC7807](https://tools.ietf.org/html/rfc7807).
 
@@ -46,7 +46,7 @@ Para gerar novas credenciais, favor entrar em contato com <a href="mailto:suport
 }
 ```
 
-**Limite de requisições**
+<h4 id="rate-limit">Limite de requisições</h4>
 
 - É recomendado um volume máximo de 100 requisições por minuto.
 
@@ -63,6 +63,28 @@ Content-Type: application/json
   "more_info": "https://developer.nukleo.io/errors/2003"
 }
 ```
+
+<h4 id="pagination">Paginação</h4>
+
+- Os recursos da API possuem suporte de paginação para métodos de lista `GET /{{recurso}}`. Por exemplo, você pode listar [Receipts](#receipts), [Customers](#customers) e [Companies](#companies).
+
+- Esses métodos de API de lista têm uma estrutura comum, aceitando três parâmetros principais: tamanho (`size`), página (`page`) e ordenação (`order_by`).
+
+| Campo | Tipo | Descrição | Obrigatório | Valor Padrão | Valor Min. | Valor Max. |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p> | `integer` | Quantidade de registros por página (tamanho da página) | `false` | `50` | `1` | `500` |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">page</p> | `integer` | Número da página atual | `false` | `1` | `-` | `-` |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">order_by</p> | `string` | Ordenar registros por um campo específico | `false` | `created_at DESC` | `-` | `-` |
+
+<h4 id="search">Busca</h4>
+
+- Os recursos da API possuem suporte para busca de registros específicos. Por exemplo, você pode pesquisar por [Receipts](#receipts), [Customers](#customers) e [Companies](#companies).
+
+- Todos os métodos de API de lista aceitam um parâmetro genérico de busca: `search`.
+
+| Campo | Tipo | Descrição | Obrigatório | Valor Padrão
+| :--- | :--- | :--- | :---: | :---: |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">search</p> | `string` | Filtrar registros entre variáveis | `false` | `-` |
 
 ## Recursos principais
 
@@ -82,7 +104,7 @@ Este é um objeto que representa as Notas Fiscais.
 
 | Nome                                                             | Endpoint        |
 | :--------------------------------------------------------------- | :-------------- |
-| [Lista receipts](#list-receipts) <Badge type="tip" text="new" /> | `GET /receipts` |
+| [Listar receipts](#list-receipts) <Badge type="tip" text="new" /> | `GET /receipts` |
 
 <h4 id="receipt-body">Objeto `Receipt`</h4>
 
@@ -174,6 +196,9 @@ GET /receipts
 `N/A`
 
 **Parâmetros de Query**
+[Parâmetros de paginação](#pagination)
+[Parâmetros de busca](#search)
+
 | Campo | Tipo | Descrição | Obrigatório | Valor Padrão
 | :--- | :--- | :--- | :---: | :---: |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p> | `integer` | Quantidade de registros por página (tamanho da página) | `false` | `50` |
