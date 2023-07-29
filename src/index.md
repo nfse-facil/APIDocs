@@ -72,7 +72,7 @@ Content-Type: application/json
 
 | Campo | Tipo | Descrição | Obrigatório | Valor Padrão | Valor Min. | Valor Max. |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: |
-| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p> | `integer` | Quantidade de registros por página (tamanho da página) | `false` | `50` | `1` | `500` |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">size</p> | `integer` | Quantidade de registros por página (tamanho da página) | `false` | `100` | `1` | `500` |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">page</p> | `integer` | Número da página atual | `false` | `1` | `-` | `-` |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">order_by</p> | `string` | Ordenar registros por um campo específico | `false` | `created_at DESC` | `-` | `-` |
 
@@ -104,7 +104,7 @@ Este é um objeto que representa as Notas Fiscais.
 
 | Nome                                                             | Endpoint        |
 | :--------------------------------------------------------------- | :-------------- |
-| [Listar receipts](#list-receipts) <Badge type="tip" text="new" /> | `GET /receipts` |
+| [Listar receipts](#list-receipts) | `GET /receipts` |
 
 <h4 id="receipt-body">Objeto `Receipt`</h4>
 
@@ -128,6 +128,11 @@ Atributos do objeto
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">extracted_fields</p> | `list[str]` | Campos extraídos da nota fiscal |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">customer</p> | `dict` | Dados do cliente [Customer](#customer-body)|
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">company</p> | `dict` | Dados da empresa [Company](#company-body)|
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">competence <Badge type="tip" text="new" /></p> | `int` | Data de competência* da nota fiscal |
+
+:::info *Data de competência
+É a data em que a emissão da nota fiscal foi comunicada ao orgão fiscalizador. Por exemplo, se a nota fiscal foi emitida em 01/01/2023, mas somente convertida (enviada ao orgão) em 01/02/2023, significa que a data de competência a ser considerada para fins contábeis é 01/02/2023. 
+:::
 
 :::details Exemplo de `Receipt`
 
@@ -163,7 +168,8 @@ Atributos do objeto
     "city": "Curitiba",
     "state": "PR",
     "tax_id": "9999999999999"
-  }
+  },
+  "competence": 1682553600000
 }
 ```
 
@@ -211,9 +217,20 @@ Campos Exclusivos
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">cancelled_at</p> | `string` | Filtra registros por data de cancelamento igual a |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">replaced_at</p> | `string` | Filtra registros por data de substituição igual a|
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at</p> | `string` | Filtra registros por data de emissão igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at__gt</p> | `string` | Filtra registros por data de emissão maior do que |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at__gte</p> | `string` | Filtra registros por data de emissão maior ou igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at__lt</p> | `string` | Filtra registros por data de emissão menor do que |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">issued_at__lte</p> | `string` | Filtra registros por data de emissão menor ou igual a |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_issued_at</p> | `string` | Filtra registros por data de conversão igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_issued_at__gt</p> | `string` | Filtra registros por data de conversão maior do que |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_issued_at__gte</p> | `string` | Filtra registros por data de conversão maior ou igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_issued_at__lt</p> | `string` | Filtra registros por data de conversão menor do que |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_issued_at__lte</p> | `string` | Filtra registros por data de conversão menor ou igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">competence <Badge type="tip" text="new" /></p>  | `string` | Filtra registros por data de competência igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">competence__gt <Badge type="tip" text="new" /></p> | `string` | Filtra registros por data de competência maior do que |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">competence__gte <Badge type="tip" text="new" /></p> | `string` | Filtra registros por data de competência maior ou igual a |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">competence__lt <Badge type="tip" text="new" /></p> | `string` | Filtra registros por data de competência menor do que |
+| <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">competence__lte <Badge type="tip" text="new" /></p> | `string` | Filtra registros por data de competência menor ou igual a |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">total_value</p> | `string` | Filtra registros por valor total igual a | 
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">receipt_number</p> | `string` | Filtra registros por número da nota fiscal igual a |
 | <p style="font-size:14px; font-weight: 800; font-family: Menlo,Consolas;">rps_number</p> | `string` | Filtra registros por número do RPS igual a | 
@@ -223,7 +240,7 @@ Campos Exclusivos
 _Exemplo_
 
 ```
-GET /receipts?issued_at__gte=2023-01-01&issued_at__lte=2023-01-31
+GET /receipts?competence__gte=2023-01-01&competence__lte=2023-01-31
 ```
 
 **Corpo da Resposta**
@@ -271,7 +288,8 @@ GET /receipts?issued_at__gte=2023-01-01&issued_at__lte=2023-01-31
         "city": "Curitiba",
         "state": "PR",
         "tax_id": "9999999999999"
-      }
+      },
+      "competence": 1682553600000
     },
     {}
   ],
