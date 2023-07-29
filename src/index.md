@@ -431,12 +431,23 @@ A **nukleo.io** considera as seguintes alterações como incompatíveis com as v
 
 ## Notas de lançamento
 
-### API v2.0 :rocket:
+### v2.0.1
+<p style="font-size:14px;font-weight:700">29 de Julho de 2023</p>
 
+- Adicionado o campo `competence` no objeto [Receipt](#receipt-body)
+- Adicionados os [campos de filtro](#receipts) no endpoint `GET /receipts`:
+  - `competence`
+  - `competence__gt`
+  - `competence__gte`
+  - `competence__lt`
+  - `competence__lte`
+
+
+### v2.0.0 :rocket:
 <p style="font-size:14px;font-weight:700">5 de Julho de 2023</p>
 
 Uma nova forma de interagir com a **nukleo.io**. A nova API foi construída com base nas tecnologias mais recentes e foi projetada para ser mais intuitiva e fácil de usar.
 
 ```
-print("Hello World v2.0")
+print("Hello World v2.0.0")
 ```
